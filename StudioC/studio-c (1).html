@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio C — Beleza e Estética</title>
+<meta name="description" content="Studio C - Beleza e Estética. Manicure, cílios, sobrancelha, massagem, limpeza de pele, cabelo e muito mais. Agende pelo WhatsApp.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQUycXfOVc_46J7SbTUukQ066Jk7dszzJXA6wcQz8SQPtbfm19PZfkCuo&s=10" type="image/x-icon">
+
+
+
+<style>
+  :root{
+    /* paleta de cor mané */
+    --color-primary:       rgb(170, 107, 154);   /*CTAs e destaques */
+    --color-primary-dark:  #4b1b35;   /* hover */
+    --color-secondary:     #e29bd6;   /* detalhes */
+    --color-secondary-soft:#FFE3E7;   /* fundos */
+    --color-gold:          #ffdfe5;   /* linhas e ícones */
+    --color-cream:         #FFF8F8;   /* fundo */
+    --color-cream-deep:    #FFEDF0;   /* fundo alternado */
+    --color-ink:           #180710;   /* texto  */
+    --color-ink-soft:      #501937;   /* texto secundário */
+    --color-white:         #FFFFFF;
+
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Manrope', sans-serif;
+
+    --radius-lg: 28px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --shadow-soft: 0 20px 60px -20px rgba(43,35,33,0.25);
+    --shadow-tight: 0 8px 24px -8px rgba(43,35,33,0.18);
+    --container: 1180px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    color:var(--color-ink);
+    background:var(--color-cream);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  .container{max-width:var(--container);margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-family:var(--font-body);
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--color-primary);
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px;height:1px;
+    background:var(--color-gold);
+    display:inline-block;
+  }
+  h1,h2,h3{font-family:var(--font-display);font-weight:500;color:var(--color-ink);}
+  .section-title{
+    font-size:clamp(2rem,4vw,2.9rem);
+    line-height:1.15;
+    margin-top:14px;
+  }
+  .section-title em{font-style:italic;color:var(--color-primary);font-weight:500;}
+  .lede{
+    color:var(--color-ink-soft);
+    font-size:1.05rem;
+    max-width:520px;
+    margin-top:16px;
+  }
+  section{padding:110px 0;position:relative;}
+  @media (max-width:768px){ section{padding:76px 0;} }
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease, transform .8s ease;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  /* botões */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    font-family:var(--font-body);font-weight:700;font-size:.95rem;
+    padding:16px 30px;border-radius:100px;border:none;cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--color-primary);color:var(--color-white);
+    box-shadow:var(--shadow-tight);
+  }
+  .btn-primary:hover{background:var(--color-primary-dark);transform:translateY(-3px);box-shadow:var(--shadow-soft);}
+  .btn-ghost{
+    background:transparent;color:var(--color-ink);border:1.5px solid rgba(43,35,33,.22);
+  }
+  .btn-ghost:hover{border-color:var(--color-primary);color:var(--color-primary);transform:translateY(-3px);}
+  .btn svg{width:19px;height:19px;flex-shrink:0;}
+
+  /* Header */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:900;
+    padding:20px 0;
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease;
+  }
+  header.scrolled{
+    background:rgba(251,246,240,.92);
+    backdrop-filter:blur(10px);
+    padding:14px 0;
+    box-shadow:0 2px 24px rgba(43,35,33,.08);
+  }
+  header .container{display:flex;align-items:center;justify-content:space-between;}
+  .logo{
+    font-family:var(--font-display);font-size:1.5rem;font-weight:600;
+    letter-spacing:.02em;color:var(--color-ink);display:flex;align-items:baseline;gap:8px;
+  }
+  .logo span{color:var(--color-primary);font-style:italic;}
+  nav ul{display:flex;gap:38px;}
+  nav a{
+    font-size:.88rem;font-weight:600;color:var(--color-ink);
+    position:relative;padding:4px 0;
+  }
+  nav a::after{
+    content:"";position:absolute;left:0;bottom:-2px;width:0;height:1.5px;
+    background:var(--color-primary);transition:width .3s ease;
+  }
+  nav a:hover::after{width:100%;}
+  .header-actions{display:flex;align-items:center;gap:18px;}
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .nav-toggle span{display:block;width:24px;height:2px;background:var(--color-ink);margin:5px 0;transition:.3s;}
+
+  @media (max-width:900px){
+    nav{position:fixed;top:0;right:0;height:100vh;width:min(78vw,320px);
+      background:var(--color-cream);box-shadow:-10px 0 40px rgba(0,0,0,.12);
+      transform:translateX(100%);transition:transform .4s ease;
+      padding:100px 36px 40px;z-index:950;}
+    nav.open{transform:translateX(0);}
+    nav ul{flex-direction:column;gap:26px;}
+    .header-actions .btn-primary{display:none;}
+    .nav-toggle{display:block;z-index:960;}
+    .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .nav-toggle.open span:nth-child(2){opacity:0;}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  }
+
+  /* Hero */
+  .hero{
+    min-height:100vh;
+    display:flex;align-items:center;
+    padding-top:120px;
+    padding-bottom:60px;
+    background:
+      radial-gradient(60% 50% at 85% 15%, rgba(255,188,197,.35), transparent 60%),
+      linear-gradient(180deg, var(--color-cream) 0%, var(--color-cream) 100%);
+  }
+  .hero .container{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;
+  }
+  .hero-copy .eyebrow{margin-bottom:6px;}
+  .hero-copy h1{
+    font-size:clamp(2.6rem,5.2vw,4.2rem);
+    line-height:1.06;
+    margin-top:18px;
+  }
+  .hero-copy h1 em{color:var(--color-primary);font-style:italic;font-weight:500;}
+  .hero-copy p{
+    margin-top:22px;color:var(--color-ink-soft);font-size:1.08rem;max-width:480px;
+  }
+  .hero-cta{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap;}
+  .hero-stats{
+    display:flex;flex-wrap:wrap;gap:28px 34px;margin-top:56px;padding-top:32px;
+    border-top:1px solid rgba(43,35,33,.12);
+  }
+  .hero-stats div strong{
+    display:block;font-family:var(--font-display);font-size:1.7rem;color:var(--color-primary);
+  }
+  .hero-stats div span{font-size:.8rem;color:var(--color-ink-soft);}
+
+  .hero-visual{position:relative;}
+  .hero-visual .frame{
+    position:relative;border-radius:var(--radius-lg);overflow:hidden;
+    box-shadow:var(--shadow-soft);
+    aspect-ratio:4/5;
+  }
+  .hero-visual .frame img{width:100%;height:100%;object-fit:cover;}
+  .hero-visual .badge{
+    position:absolute;bottom:-26px;left:-30px;
+    background:var(--color-white);border-radius:var(--radius-md);
+    padding:20px 24px;box-shadow:var(--shadow-tight);
+    display:flex;align-items:center;gap:14px;
+    max-width:250px;
+  }
+  .hero-visual .badge .stars{color:var(--color-gold);font-size:.9rem;letter-spacing:2px;}
+  .hero-visual .badge p{font-size:.82rem;color:var(--color-ink-soft);margin-top:4px;}
+  .hero-visual .ring{
+    position:absolute;top:-34px;right:-34px;width:110px;height:110px;
+    border:1.5px solid var(--color-gold);border-radius:50%;opacity:.55;
+  }
+
+  @media (max-height:520px) and (orientation:landscape){
+    .hero{min-height:auto;padding-top:110px;}
+  }
+
+  @media (max-width:960px){
+    .hero .container{grid-template-columns:1fr;text-align:left;}
+    .hero-visual{order:-1;max-width:420px;}
+    .hero-visual .badge{left:14px;}
+  }
+
+  .brush-divider{width:100%;height:64px;display:block;color:var(--color-cream-deep);}
+
+  /* Sobre nós */
+  .about{background:var(--color-cream-deep);}
+  .about .container{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;align-items:center;}
+  .about-visual{position:relative;}
+  .about-visual img{border-radius:var(--radius-lg);box-shadow:var(--shadow-soft);aspect-ratio:3/4;object-fit:cover;}
+  .about-visual::before{
+    content:"";position:absolute;inset:20px -20px -20px 20px;
+    border:1.5px solid var(--color-gold);border-radius:var(--radius-lg);
+    z-index:-1;
+  }
+  .about-copy p{color:var(--color-ink-soft);margin-top:20px;max-width:560px;}
+  .about-points{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:38px;max-width:560px;}
+  .about-points li{display:flex;gap:12px;align-items:flex-start;font-size:.92rem;font-weight:600;}
+  .about-points svg{width:20px;height:20px;flex-shrink:0;color:var(--color-primary);margin-top:2px;}
+  @media (max-width:900px){
+    .about .container{grid-template-columns:1fr;}
+    .about-visual{max-width:380px;}
+    .about-points{grid-template-columns:1fr;}
+  }
+
+  /* Serviços */
+  .services-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
+  .services-grid{
+    margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;
+  }
+  .service-card{
+    background:var(--color-white);border-radius:var(--radius-md);overflow:hidden;
+    box-shadow:var(--shadow-tight);transition:transform .35s ease, box-shadow .35s ease;
+    display:flex;flex-direction:column;
+  }
+  .service-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-soft);}
+  .service-card .thumb{aspect-ratio:4/3;overflow:hidden;position:relative;}
+  .service-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .service-card:hover .thumb img{transform:scale(1.07);}
+  .service-card .thumb .price{
+    position:absolute;top:14px;right:14px;background:rgba(251,246,240,.92);
+    color:var(--color-primary);font-weight:800;font-size:.78rem;
+    padding:6px 14px;border-radius:100px;backdrop-filter:blur(4px);
+  }
+  .service-card .body{padding:26px 24px 28px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .service-card h3{font-size:1.2rem;}
+  .service-card p{color:var(--color-ink-soft);font-size:.9rem;flex:1;}
+  .service-card .btn{margin-top:14px;width:100%;padding:13px 20px;font-size:.85rem;}
+
+  @media (max-width:960px){.services-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:640px){.services-grid{grid-template-columns:1 fr;}}
+
+  /* Resenhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */
+  .testimonials{background:var(--color-primary);color:var(--color-white);}
+  .testimonials .eyebrow{color:var(--color-secondary-soft);}
+  .testimonials .eyebrow::before{background:var(--color-secondary-soft);}
+  .testimonials h2{color:var(--color-white);}
+  .t-grid{margin-top:54px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .t-card{
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+    border-radius:var(--radius-md);padding:30px 26px;
+  }
+  .t-card .stars{color:var(--color-gold);letter-spacing:3px;margin-bottom:14px;display:block;}
+  .t-card p{font-size:.95rem;opacity:.92;}
+  .t-card .who{margin-top:18px;font-weight:700;font-size:.85rem;}
+  @media (max-width:900px){.t-grid{grid-template-columns:1fr;}}
+
+  /* Localização */
+  .location .container{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;align-items:stretch;}
+  .location-card{
+    background:var(--color-white);border-radius:var(--radius-lg) 0 0 var(--radius-lg);
+    box-shadow:var(--shadow-soft);padding:52px 44px;z-index:2;
+  }
+  .location-card .eyebrow{margin-bottom:6px;}
+  .location-list{margin-top:30px;display:flex;flex-direction:column;gap:24px;}
+  .location-list li{display:flex;gap:16px;align-items:flex-start;}
+  .location-list .ic{
+    width:42px;height:42px;border-radius:50%;background:var(--color-secondary-soft);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .location-list .ic svg{width:19px;height:19px;color:var(--color-primary);}
+  .location-list h4{font-size:.92rem;font-weight:800;margin-bottom:3px;}
+  .location-list p{font-size:.87rem;color:var(--color-ink-soft);}
+  .location-card .btn{margin-top:32px;width:100%;}
+  .map-wrap{border-radius:0 var(--radius-lg) var(--radius-lg) 0;overflow:hidden;box-shadow:var(--shadow-soft);}
+  .map-wrap iframe{width:100%;height:100%;min-height:440px;border:0;filter:saturate(.85) contrast(1.02);}
+
+  @media (max-width:900px){
+    .location .container{grid-template-columns:1fr;}
+    .location-card{border-radius:var(--radius-lg);}
+    .map-wrap{border-radius:var(--radius-lg);margin-top:-20px;position:relative;z-index:1;}
+    .map-wrap iframe{min-height:320px;}
+  }
+
+  /* Cta */
+  .final-cta{
+    background:linear-gradient(135deg, var(--color-ink) 0%, #3c2c3d 100%);
+    color:var(--color-white);text-align:center;
+  }
+  .final-cta .container{max-width:680px;}
+  .final-cta h2{color:var(--color-white);}
+  .final-cta p{color:rgba(255,255,255,.72);margin-top:16px;}
+  .final-cta .btn-primary{margin-top:34px;}
+
+  /* Footer */
+  footer{background:var(--color-ink);color:rgba(255,255,255,.75);padding:70px 0 30px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;}
+  .footer-logo{font-family:var(--font-display);font-size:1.5rem;color:var(--color-white);}
+  .footer-logo span{color:var(--color-secondary);font-style:italic;}
+  .footer-grid p{font-size:.87rem;margin-top:14px;max-width:280px;color:rgba(255,255,255,.55);}
+  .footer-social{display:flex;gap:12px;margin-top:20px;}
+  .footer-social a{
+    width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
+    display:flex;align-items:center;justify-content:center;transition:.25s;
+  }
+  .footer-social a:hover{background:var(--color-secondary);border-color:var(--color-secondary);}
+  .footer-social svg{width:16px;height:16px;}
+  .footer-col h4{color:var(--color-white);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;}
+  .footer-col li{margin-bottom:12px;font-size:.88rem;}
+  .footer-col a:hover{color:var(--color-secondary);}
+  .footer-bottom{
+    margin-top:60px;padding-top:26px;border-top:1px solid rgba(255,255,255,.12);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:.78rem;color:rgba(255,255,255,.45);
+  }
+  @media (max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.footer-grid{grid-template-columns:1fr;}}
+
+  /* Btn whatsapp */
+  .wa-float{
+    position:fixed;bottom:26px;right:26px;z-index:999;
+    width:64px;height:64px;border-radius:50%;
+    background:#25D366;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 30px rgba(37,211,102,.45);
+    animation:wa-pulse 2.6s infinite;
+    transition:transform .25s ease;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+  .wa-float svg{width:32px;height:32px;color:#fff;}
+  @keyframes wa-pulse{
+    0%{box-shadow:0 10px 30px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,.5);}
+    70%{box-shadow:0 10px 30px rgba(37,211,102,.45),0 0 0 16px rgba(37,211,102,0);}
+    100%{box-shadow:0 10px 30px rgba(37,211,102,.45),0 0 0 0 rgba(37,211,102,0);}
+  }
+  @media (max-width:600px){
+    .wa-float{width:56px;height:56px;bottom:18px;right:18px;}
+    .wa-float svg{width:27px;height:27px;}
+  }
+
+  /* telas muito pequenas */
+  @media (max-width:400px){
+    .container{padding:0 18px;}
+    section{padding:60px 0;}
+    .hero{padding-top:104px;}
+    .btn{padding:14px 22px;font-size:.88rem;}
+    .hero-cta{gap:12px;}
+    .hero-cta .btn{width:100%;}
+    .location-card{padding:36px 24px;}
+    .service-card .body{padding:22px 18px 24px;}
+  }
+
+  /* garante área de toque confortável em qualquer dispositivo touch */
+  @media (hover:none){
+    .btn, nav a, .service-card .btn{min-height:44px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    .wa-float{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header id="siteHeader">
+  <div class="container">
+    <a href="#top" class="logo">Studio <span>C</span> - Beleza e Estética</a>
+    <nav id="siteNav">
+      <ul>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#depoimentos">Depoimentos</a></li>
+        <li><a href="#local">Onde estamos</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-primary" id="headerWaBtn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.34 2 11.7c0 1.99.62 3.83 1.68 5.37L2 22l5.14-1.65a10.4 10.4 0 0 0 4.86 1.2c5.52 0 10-4.34 10-9.7C22 6.34 17.52 2 12 2zm0 17.6c-1.6 0-3.1-.44-4.38-1.2l-.31-.18-3.06.98.99-2.95-.2-.31A7.9 7.9 0 0 1 4 11.7C4 7.45 7.58 4 12 4s8 3.45 8 7.7-3.58 7.9-8 7.9zm4.4-5.9c-.24-.12-1.44-.7-1.66-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.18-.72-.63-1.2-1.4-1.34-1.64-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.28-.74-1.76-.2-.46-.4-.4-.54-.4h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.5.58.18 1.1.16 1.52.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+        Agendar
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy reveal">
+      <span class="eyebrow">Beleza & Estética · São Paulo</span>
+      <h1>Sua beleza cuidada com <em>técnica</em> e sensibilidade</h1>
+      <p>No Studio C - Beleza e Estética você encontra cabelo, unhas, cílios, sobrancelha e estética facial e corporal num único endereço — com atendimento próximo e resultado que dura. Autocuidado sem pressa, do jeito que você merece.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" id="heroWaBtn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.34 2 11.7c0 1.99.62 3.83 1.68 5.37L2 22l5.14-1.65a10.4 10.4 0 0 0 4.86 1.2c5.52 0 10-4.34 10-9.7C22 6.34 17.52 2 12 2zm0 17.6c-1.6 0-3.1-.44-4.38-1.2l-.31-.18-3.06.98.99-2.95-.2-.31A7.9 7.9 0 0 1 4 11.7C4 7.45 7.58 4 12 4s8 3.45 8 7.7-3.58 7.9-8 7.9zm4.4-5.9c-.24-.12-1.44-.7-1.66-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.18-.72-.63-1.2-1.4-1.34-1.64-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.28-.74-1.76-.2-.46-.4-.4-.54-.4h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.5.58.18 1.1.16 1.52.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+          Agendar pelo WhatsApp
+        </a>
+        <a href="#servicos" class="btn btn-ghost">Ver serviços</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>SP</strong><span>Cambuci, São Paulo</span></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="ring"></div>
+      <div class="frame">
+        <img src="img/hero.jpeg" alt="Cliente sendo atendida no Studio C">
+      </div>
+      <div class="badge">
+        <div>
+          <span class="stars">★★★★★</span>
+          <p>"Eu amei ! Super recomendo 💅🏾🌷."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="brush-divider" viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0,30 C150,60 300,0 450,28 C600,56 750,4 900,26 C1050,48 1150,10 1200,30 L1200,60 L0,60 Z" fill="currentColor"/></svg>
+
+<!-- Sobre nós -->
+<section class="about" id="sobre">
+  <div class="container">
+    <div class="about-visual reveal">
+      <img src="img/sobre.jpeg" alt="Local do Studio C">
+    </div>
+    <div class="about-copy reveal">
+      <span class="eyebrow">Sobre nós</span>
+      <h2 class="section-title">Um espaço pensado para o seu <em>bem-estar</em></h2>
+      <p>O Studio C - Beleza e Estética nasceu do desejo de reunir, num só lugar, tudo o que uma cliente precisa para cuidar de si com calma e qualidade. Nossa equipe é formada por profissionais especializados em cabelo, unhas, cílios, sobrancelha e estética facial e corporal, sempre atualizados com as técnicas mais modernas do mercado.</p>
+      <p>Mais do que procedimentos, entregamos experiência: escuta atenta, produtos de qualidade e um ambiente acolhedor pensado para que cada visita seja também um momento de pausa na sua rotina.</p>
+      <ul class="about-points">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Profissionais especializados</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Produtos de alta qualidade</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Ambiente climatizado e acolhedor</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Agendamento fácil pelo WhatsApp</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Serviços -->
+<section class="services" id="servicos">
+  <div class="container">
+    <div class="services-head reveal">
+      <div>
+        <span class="eyebrow">O que fazemos</span>
+        <h2 class="section-title">Serviços feitos <em>sob medida</em><br>para você</h2>
+      </div>
+      <p class="lede">Escolha o serviço e fale direto com a nossa equipe pelo WhatsApp — sem formulário, sem espera.</p>
+    </div>
+    <div class="services-grid" id="servicesGrid"></div>
+  </div>
+</section>
+
+<!-- Resenhaaaa -->
+<section class="testimonials" id="depoimentos">
+  <div class="container">
+    <span class="eyebrow reveal">Depoimentos</span>
+    <h2 class="section-title reveal">Quem experimenta, <em>volta</em></h2>
+    <div class="t-grid">
+      <div class="t-card reveal">
+        <span class="stars">★★★★★</span>
+        <p>"Fui muito bem atendida! 😊 O atendimento foi excelente, com muita atenção, cuidado e profissionalismo. Com certeza voltarei mais vezes e super recomendo! 💙"</p>
+        <div class="who">Livia.</div>
+      </div>
+      <div class="t-card reveal">
+        <span class="stars">★★★★★</span>
+        <p>"Local acolhedor e com ótimas profissionais.🤩"</p>
+        <div class="who">Simone Darin.</div>
+      </div>
+      <div class="t-card reveal">
+        <span class="stars">★★★★★</span>
+        <p>"Tratamento excelente e serviço impecável! Melhor salão do Cambuci ❤️"</p>
+        <div class="who">Bruna Cara.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Localização  -->
+<section class="location" id="local">
+  <div class="container">
+    <div class="location-card reveal">
+      <span class="eyebrow">Onde encontrar</span>
+      <h2 class="section-title" style="font-size:1.9rem;">Venha nos <em>visitar</em></h2>
+      <ul class="location-list">
+        <li>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><h4>Endereço</h4><p id="infoAddress">Rua Senador Carlos Teixeira de Carvalho, 435 — São Paulo, SP</p></div>
+        </li>
+        <li>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div><h4>Horário de funcionamento</h4><p id="infoHours">Terça a sábado, 9h às 19h</p></div>
+        </li>
+        <li>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><h4>Telefone / WhatsApp</h4><p id="infoPhone">(11) 99490-5239</p></div>
+        </li>
+      </ul>
+      <a class="btn btn-primary" id="mapsBtn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Como chegar
+      </a>
+    </div>
+    <div class="map-wrap reveal">
+      <iframe id="mapFrame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.979684734683!2d-46.6223257!3d-23.5691731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59cbce02f007%3A0x67d33fb3b6e0fecf!2sStudio%20C%20-%20Beleza%20e%20Est%C3%A9tica!5e0!3m2!1spt-BR!2sbr!4v1784774818299!5m2!1spt-BR!2sbr" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- Cta -->
+<section class="final-cta">
+  <div class="container reveal">
+    <span class="eyebrow" style="color:var(--color-secondary);">Vamos agendar?</span>
+    <h2 class="section-title">Seu momento de cuidado <em>começa agora</em></h2>
+    <p>Fale com a gente pelo WhatsApp e garanta seu horário no <br> Studio C - Beleza e Estética.</p>
+    <a class="btn btn-primary" id="finalWaBtn" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.34 2 11.7c0 1.99.62 3.83 1.68 5.37L2 22l5.14-1.65a10.4 10.4 0 0 0 4.86 1.2c5.52 0 10-4.34 10-9.7C22 6.34 17.52 2 12 2zm0 17.6c-1.6 0-3.1-.44-4.38-1.2l-.31-.18-3.06.98.99-2.95-.2-.31A7.9 7.9 0 0 1 4 11.7C4 7.45 7.58 4 12 4s8 3.45 8 7.7-3.58 7.9-8 7.9zm4.4-5.9c-.24-.12-1.44-.7-1.66-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.18-.72-.63-1.2-1.4-1.34-1.64-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.28-.74-1.76-.2-.46-.4-.4-.54-.4h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.5.58.18 1.1.16 1.52.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+      Agendar pelo WhatsApp
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Studio <span>C</span> — Beleza e Estética</div>
+        <p>Beleza e estética em São Paulo. Cabelo, unhas, cílios, sobrancelha e estética facial e corporal num único endereço.</p>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#sobre">Sobre nós</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#depoimentos">Depoimentos</a></li>
+          <li><a href="#local">Onde estamos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li id="footerPhone"></li>
+          <li id="footerEmail"></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Horário</h4>
+        <ul>
+          <li id="footerHours"></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="footerYear"></span> Studio C — Beleza e Estética. Todos os direitos reservados.</span>
+      <span>Site desenvolvido por Gustavo Bassoto Figueiredo.</span>
+    </div>
+  </div>
+</footer>
+
+<!--Btn do WhatsApp-->
+<a class="wa-float" id="floatWaBtn" target="_blank" rel="noopener" aria-label="Fale conosco no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.34 2 11.7c0 1.99.62 3.83 1.68 5.37L2 22l5.14-1.65a10.4 10.4 0 0 0 4.86 1.2c5.52 0 10-4.34 10-9.7C22 6.34 17.52 2 12 2zm0 17.6c-1.6 0-3.1-.44-4.38-1.2l-.31-.18-3.06.98.99-2.95-.2-.31A7.9 7.9 0 0 1 4 11.7C4 7.45 7.58 4 12 4s8 3.45 8 7.7-3.58 7.9-8 7.9zm4.4-5.9c-.24-.12-1.44-.7-1.66-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.18-.72-.63-1.2-1.4-1.34-1.64-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.28-.74-1.76-.2-.46-.4-.4-.54-.4h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.5.58.18 1.1.16 1.52.1.46-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28z"/></svg>
+</a>
+
+<script>
+/* Configuração dos serviços */
+const BUSINESS = {
+  name: "Studio C",
+  whatsappNumber: "5511994905239", // formato internacional, apenas números
+  whatsappDefaultMessage: "Olá! Vim pelo site e gostaria de saber mais sobre os serviços do Studio C.",
+  phoneDisplay: "(11) 99490-5239",
+  email: "bassotocapannacci@gmail.com",
+  address: "Rua Senador Carlos Teixeira de Carvalho, 435 — São Paulo, SP",
+  hours: "Terça a sábado, 9h às 18h",
+  instagramUrl: "https://www.instagram.com/capannaccistudio/",
+  facebookUrl: "https://www.facebook.com/capannaccistudio/",
+  mapsQuery: "Rua Senador Carlos Teixeira de Carvalho, 435, São Paulo, SP"
+};
+
+const SERVICES = [
+  {
+    name: "Cabelo",
+    desc: "Progressiva, botox, escova. Tudo que você tem direito!",
+    img: "img/cabelo.jpeg"
+  },
+  {
+    name: "Manicure & Pedicure",
+    desc: "Cuidado completo para mãos e pés, com acabamento impecável.",
+    img: "img/manicure.jpeg"
+  },
+  {
+    name: "Alongamento em Fibra de Vidro",
+    desc: "Unhas resistentes e naturais, com durabilidade e leveza.",
+    img: "img/alongamento.jpeg"
+  },
+  {
+    name: "Extensão de Cílios",
+    desc: "Olhar marcante volume brasileiro ou fio a fio, com técnica e produtos hipoalergênicos.",
+    img: "img/cilios.jpeg"
+  },
+  {
+    name: "Design de Sobrancelha",
+    desc: "Modelagem sob medida para harmonizar e realçar o seu rosto.",
+    img: "img/sobrancelha.jpeg"
+  },
+
+  {
+    name: "Massagem Corporal",
+    desc: "Sessão relaxante e terapêutica para aliviar tensões do dia a dia.",
+    img: "img/massagem.jpeg",
+  },
+  {
+    name: "Limpeza de pele",
+    desc: "Progressiva, botox, escova. Tudo que você tem direito!",
+    img: "img/limpeza.jpeg"
+  },
+  {
+    name: "Depilação",
+    desc: "Progressiva, botox, escova. Tudo que você tem direito!",
+    img: "img/depilação.jpeg"
+  },
+  {
+    name: "Spa nos pés",
+    desc: "Progressiva, botox, escova. Tudo que você tem direito!",
+    img: "img/spa.jpeg"
+  },
+];
+
+
+function waLink(message){
+  return `https://wa.me/${BUSINESS.whatsappNumber}?text=${encodeURIComponent(message)}`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // botões de WhatsApp fixos
+  const fixedButtons = [
+    ["headerWaBtn", BUSINESS.whatsappDefaultMessage],
+    ["heroWaBtn", BUSINESS.whatsappDefaultMessage],
+    ["finalWaBtn", BUSINESS.whatsappDefaultMessage],
+    ["floatWaBtn", "Olá, gostaria de conhecer melhor os serviços."]
+  ];
+  fixedButtons.forEach(([id, msg]) => {
+    const el = document.getElementById(id);
+    if (el) el.href = waLink(msg);
+  });
+
+  // informações de contato
+  document.getElementById("infoAddress").textContent = BUSINESS.address;
+  document.getElementById("infoHours").textContent = BUSINESS.hours;
+  document.getElementById("infoPhone").textContent = BUSINESS.phoneDisplay;
+  document.getElementById("footerPhone").innerHTML = `<a href="${waLink(BUSINESS.whatsappDefaultMessage)}" target="_blank" rel="noopener">${BUSINESS.phoneDisplay}</a>`;
+  document.getElementById("footerEmail").innerHTML = `<a href="mailto:${BUSINESS.email}">${BUSINESS.email}</a>`;
+  document.getElementById("footerHours").textContent = BUSINESS.hours;
+  document.getElementById("footerYear").textContent = new Date().getFullYear();
+
+
+  document.getElementById("mapsBtn").href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(BUSINESS.mapsQuery)}`;
+
+  // redes sociais no footer
+  const socialIcons = {
+    instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>`,
+    facebook: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`
+  };
+  const footerSocial = document.getElementById("footerSocial");
+  if (BUSINESS.instagramUrl) footerSocial.innerHTML += `<a href="${BUSINESS.instagramUrl}" target="_blank" rel="noopener" aria-label="Instagram">${socialIcons.instagram}</a>`;
+  if (BUSINESS.facebookUrl) footerSocial.innerHTML += `<a href="${BUSINESS.facebookUrl}" target="_blank" rel="noopener" aria-label="Facebook">${socialIcons.facebook}</a>`;
+
+  // renderizar cards de serviço
+  const grid = document.getElementById("servicesGrid");
+  grid.innerHTML = SERVICES.map(s => `
+    <div class="service-card reveal">
+      <div class="thumb">
+        <img src="${s.img}" alt="${s.name}" loading="lazy">
+        ${s.price ? `<span class="price">${s.price}</span>` : ""}
+      </div>
+      <div class="body">
+        <h3>${s.name}</h3>
+        <p>${s.desc}</p>
+        <a class="btn btn-primary" href="${waLink('Olá, gostaria de saber mais sobre o serviço ' + s.name + '.')}" target="_blank" rel="noopener">Tenho interesse</a>
+      </div>
+    </div>
+  `).join("");
+
+  // header ao rolar
+  const header = document.getElementById("siteHeader");
+  window.addEventListener("scroll", () => {
+    header.classList.toggle("scrolled", window.scrollY > 40);
+  });
+
+  // menu mobile
+  const navToggle = document.getElementById("navToggle");
+  const nav = document.getElementById("siteNav");
+  navToggle.addEventListener("click", () => {
+    navToggle.classList.toggle("open");
+    nav.classList.toggle("open");
+  });
+  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+    navToggle.classList.remove("open");
+    nav.classList.remove("open");
+  }));
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll(".reveal");
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+});
+</script>
+</body>
+</html>
